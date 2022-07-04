@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.leolam.www.user.web.mapper.CodeMapper">
+    <delete id="deleteCodeByUserId" parameterType="Code">
+        delete from code where user_id=#{userId}
+    </delete>
+
+    <insert id="insertCodeByUserIdAndCode" parameterType="Code">
+        insert into code(user_id,code) value (#{userId},#{code})
+    </insert>
+
+    <select id="findCodeByUserId" parameterType="Long" resultType="Code">
+        select * from code where user_id=#{param1}
+    </select>
+
+<!--    <resultMap id="getOneCode" type="Code">-->
+<!--        <id property="codeId" column="code_id" />-->
+<!--        <result property="userId" column="user_id" />-->
+<!--        <result property="time" column="time" jdbcType="TIMESTAMP" />-->
+<!--        <result property="code" column="code"/>-->
+<!--    </resultMap>-->
+
+</mapper>

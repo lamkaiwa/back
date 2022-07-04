@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.leolam.www.video.web.mapper.ZanListMapper">
+    <delete id="deleteZanListsByVideoId" parameterType="Integer">
+        delete from zanList
+        where videoId=#{videoId}
+    </delete>
+
+    <select id="getZanListCountByVideoId" resultType="Long" parameterType="Integer">
+        select count(*)
+        from zanList
+        where videoId = #{videoId}
+    </select>
+
+    <select id="getZanListCountByZanList" resultType="Integer" parameterType="ZanList">
+        select count(*)
+        from zanList
+        where videoId=#{videoId} and userId=#{userId}
+    </select>
+
+    <delete id="deleteZanListByZanList" parameterType="ZanList">
+        delete from zanList
+        where videoId=#{videoId} and userId=#{userId}
+    </delete>
+
+    <insert id="insertZanListByZanList" parameterType="ZanList">
+        insert into zanList
+        value (#{videoId},#{userId})
+    </insert>
+</mapper>

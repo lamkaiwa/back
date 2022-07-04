@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.leolam.www.video.web.mapper.CollectionListMapper">
+    <delete id="deleteCollectionListsByVideoId" parameterType="Integer">
+        delete
+        from collectionList
+        where videoId = #{videoId}
+    </delete>
+
+    <select id="getCollectionListsByUserId" resultType="CollectionList" parameterType="Integer">
+        select *
+        from collectionList
+        where userId = #{userId} Limit #{page}
+            , #{pageSize}
+    </select>
+
+    <select id="getCollectionListCountByUserId" resultType="Integer" parameterType="Integer">
+        select count(*)
+        from collectionList
+        where userId = #{userId}
+    </select>
+
+    <select id="getCollectionListCountByVideoId" resultType="Long" parameterType="Integer">
+        select count(*)
+        from collectionList
+        where videoId = #{videoId}
+    </select>
+
+    <delete id="deleteCollectionListByCollectionList" parameterType="CollectionList">
+        delete
+        from collectionList
+        where videoId = #{videoId}
+          and userId = #{userId}
+    </delete>
+
+    <insert id="insertCollectionListByCollectionList" parameterType="CollectionList">
+        insert into collectionList value (#{videoId},#{userId})
+    </insert>
+
+    <select id="getCollectionListCountByCollectionList" parameterType="CollectionList" resultType="Integer">
+        select count(*) from collectionList
+        where videoId = #{videoId}
+          and userId = #{userId}
+    </select>
+</mapper>

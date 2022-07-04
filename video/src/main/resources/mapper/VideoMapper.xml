@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="cn.leolam.www.video.web.mapper.VideoMapper">
+    <select id="getLimitTypeVideoOrderByPlayCount" parameterType="Integer"
+            resultMap="getLimitTypeVideoOrderByPlayCountMap">
+        select * from video
+        <if test="type!=null">
+            where type=#{type}
+        </if>
+        order by playCount desc
+        limit #{page},#{pageSize}
+    </select>
+
+    <resultMap id="getLimitTypeVideoOrderByPlayCountMap" type="Video">
+        <id property="id" column="id"/>
+        <result property="playCount" column="playCount"/>
+        <result property="author" column="author"/>
+        <result property="title" column="title"/>
+        <result property="type" column="type"/>
+        <result property="uploadTime" column="uploadTime"/>
+        <result property="imageName" column="imageName"/>
+        <result property="videoName" column="videoName"/>
+        <result property="pageSize" column="pageSize"/>
+        <association property="collectCount"
+                     select="cn.leolam.www.video.web.mapper.CollectionListMapper.getCollectionListCountByVideoId"
+                     column="id"/>
+        <association property="zanCount" select="cn.leolam.www.video.web.mapper.ZanListMapper.getZanListCountByVideoId"
+                     column="id"/>
+    </resultMap>
+
+    <select id="getAllVideoCountByType" parameterType="Integer" resultType="Integer">
+        select count(*) from video
+        <if test="type!=null">
+            where type=#{type}
+        </if>
+    </select>
+
+    <select id="getSearchVideoByLikeSortTypeUserId" resultMap="getLimitTypeVideoOrderByPlayCountMap">
+        select * from video
+        <where>
+            <if test="words!=null and words!=''">
+                (
+                video.title LIKE concat('%',#{words},'%')
+                or
+                video.`desc` LIKE concat('%',#{words},'%')
+                )
+            </if>
+
+            <if test="userId!=null">
+                and author=#{userId}
+            </if>
+        </where>
+        <if test="sortType=='playCount'">
+            order by playCount desc
+        </if>
+        <if test="sortType=='uploadTime'">
+            order by uploadTime desc
+        </if>
+        Limit #{page},#{pageSize}
+    </select>
+
+    <select id="getSearchVideoCountByLikeUserId" resultType="Integer">
+        select count(*) from video
+        <where>
+            <if test="words!=null">
+                (
+                video.title LIKE concat('%',#{words},'%')
+                or
+                video.`desc` LIKE concat('%',#{words},'%')
+                )
+            </if>
+
+            <if test="userId!=null">
+                and author=#{userId}
+            </if>
+        </where>
+    </select>
+
+
+    <delete id="deleteVideoByVideoId" parameterType="Integer">
+        delete
+        from video
+        where id = #{videoId}
+    </delete>
+
+    <select id="getVideoById" parameterType="Integer" resultMap="getLimitTypeVideoOrderByPlayCountMap">
+        select *
+        from video
+        where id = #{videoId}
+    </select>
+
+
+    <insert id="insertVideoByVideo" parameterType="Video">
+        insert into video (id, playCount, collectCount, zanCount, author, title, type, `desc`, uploadTime, imageName,
+                           videoName)
+            value (default ,default ,default ,default ,#{author},#{title},#{type},#{desc}, default,#{imageName},#{videoName})
+    </insert>
+
+
+    <select id="getRecommendVideoByTwoWordsAndSortType" resultMap="getLimitTypeVideoOrderByPlayCountMap">
+        select * from video
+        <where>
+            <if test="title!=null and title!=''">
+                video.title LIKE concat('%',#{title},'%')
+            </if>
+
+
+            <if test="desc!=null and desc!=''">
+                or
+                video.title LIKE concat('%',#{desc},'%')
+            </if>
+            <if test="userId!=null">
+                and author=#{userId}
+            </if>
+        </where>
+        <if test="sortType=='playCount'">
+            order by playCount desc
+        </if>
+        <if test="sortType=='uploadTime'">
+            order by uploadTime desc
+        </if>
+        Limit #{page},#{pageSize}
+    </select>
+
+
+    <update id="updateVideoPlayCountByVideoId" parameterType="Integer">
+        update video
+        set playCount = playCount + 1
+        where id = #{videoId}
+    </update>
+
+    <select id="getVideosByAuthor" parameterType="Long" resultType="Video">
+        select *
+        from video
+        where author = #{userId}
+    </select>
+
+    <update id="updateVideoByVideo" parameterType="Video">
+        update video
+        <set>
+            <if test="playCount!=null">
+                `playCount` = #{playCount},
+            </if>
+            <if test="author!=null">
+                `author` = #{author},
+            </if>
+            <if test="title!=null">
+                `title` = #{title},
+            </if>
+            <if test="type!=null">
+                `type` = #{type},
+            </if>
+            <if test="desc!=null">
+                `desc` = #{desc},
+            </if>
+            <if test="uploadTime!=null">
+                `uploadTime` = #{uploadTime},
+            </if>
+            <if test="imageName!=null">
+                `imageName` = #{imageName},
+            </if>
+            <if test="videoName!=null">
+                `videoName` = #{videoName},
+            </if>
+        </set>
+        where id=#{id}
+    </update>
+
+    <!--    <resultMap id="getLimitTypeVideoOrderByPlayCountMap" type="Video">-->
+    <!--        <result property="id" column="id" />-->
+    <!--        <result property="playCount" column="playCount" />-->
+    <!--    </resultMap>-->
+
+    <!--    <select id="playCountById" resultType="integer" parameterType="Integer">-->
+    <!--        select count(*) from collectList where video_id = #{0}-->
+    <!--    </select>-->
+
+
+</mapper>

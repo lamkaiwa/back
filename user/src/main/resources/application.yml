@@ -1,0 +1,64 @@
+server:
+  port: 9004
+  servlet:
+    context-path: /user # 应用名 localhost:8090/auth
+
+eureka:
+  client:
+    registerWithEureka: true # 服务注册开关
+    fetchRegistry: true # 服务发现开关
+    serviceUrl: # 注册到哪一个Eureka Server服务注册中心，多个中间用逗号分隔
+      defaultZone: http://localhost:6001/eureka
+  instance:
+    instanceId: ${spring.application.name}:${server.port} # 指定实例ID,页面会显示主机名
+    preferIpAddress: true     #访问路径可以显示IP地址
+
+spring:
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
+  application:
+    name: user-server # Eureka页面显示
+
+  datasource:
+    username: root
+    password: s09115/.
+    url: jdbc:mysql://localhost:3306/bibiliTV?useUnicode=true&characterEncoding=utf8&serverTimezone=UTC&zeroDateTimeBehavior=convertToNull&allowMultiQueries=true&serverTimezone=CTT
+    #mysql8版本以上驱动包指定新的驱动类
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    #   数据源其他配置, 在 DruidConfig配置类中手动绑定
+    initialSize: 8
+    minIdle: 5
+    maxActive: 20
+    maxWait: 60000
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: SELECT 1 FROM DUAL
+
+mybatis-plus:
+  # 指定实体类所有包
+  type-aliases-package: cn.leolam.www.user.web.entities
+
+
+# 日志级别，会打印sql语句
+logging:
+  level:
+    cn.leolam.www.user.web.mapper: debug
+
+
+auth:
+  clientId: leolam
+  clientPassword: 123
+  username: leolam1
+  password: 123
+  tokenString: leolam
+  gateWayUrl: http://localhost:7001
+  oauth2Method: password
+  oauth2GetTokenUrl: /auth/oauth/token
+  emailAddress: 1124013284@qq.com
+  emailPassWord: hnqwzcsbvbdnjggd
+  codeExpireTime: 60
+  userPageSize: 10
+  pageSizeOnNoticePage: 10
+  itemDir: /tv/

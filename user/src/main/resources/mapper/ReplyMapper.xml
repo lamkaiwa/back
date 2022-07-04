@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.leolam.www.user.web.mapper.ReplyMapper">
+    <select id="getReplysByCommentId" resultType="Reply" parameterType="Long">
+        select *
+        from reply
+        where commentId = #{parms0}
+        order by date asc
+    </select>
+
+    <insert id="insertReplyByReply" parameterType="Reply">
+        insert into reply value (default ,#{commentId},#{from},#{to},#{content}, default )
+    </insert>
+
+    <delete id="deleteReplysByCommentId" parameterType="Long">
+        delete
+        from reply
+        where commentId = #{commentId}
+    </delete>
+
+    <delete id="deleteReplyById" parameterType="Long">
+        delete
+        from reply
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteReplysByFromOrTo" parameterType="Long">
+        delete
+        from reply
+        where
+        `from` = #{userId} or `to` = #{userId}
+    </delete>
+
+    <select id="getLastReplyId" resultType="java.lang.Integer">
+        SELECT LAST_INSERT_ID()
+    </select>
+</mapper>

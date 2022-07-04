@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.leolam.www.user.web.mapper.AttentionMapper">
+    <delete id="deleteAttentionByUserIdAndFans" parameterType="Attention">
+        delete from attention
+        where userId=#{userId} and fans=#{fans}
+    </delete>
+    <select id="getAttentionCountByUserId" parameterType="Long" resultType="Long">
+        select count(*) from attention where userId=#{0}
+    </select>
+    <select id="getAttentionExistByUserIdAndFans" parameterType="Attention" resultType="Integer">
+        select count(*) from attention
+        where userId=#{userId} and fans=#{fans}
+    </select>
+    <insert id="insertAttentionByByUserIdAndFans" parameterType="Attention">
+        insert into attention value(#{userId},#{fans})
+    </insert>
+    <delete id="deleteAttentionsByUserIdOrFans" parameterType="Long">
+        delete from attention
+        where userId =#{userId} or fans = #{userId}
+    </delete>
+
+</mapper>

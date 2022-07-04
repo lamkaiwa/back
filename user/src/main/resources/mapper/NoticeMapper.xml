@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.leolam.www.user.web.mapper.NoticeMapper">
+    <select id="getNotices" resultType="Notice">
+        select *
+        from notice
+    </select>
+    <select id="getNoticeByPage" resultType="Notice">
+        select *
+        from notice Limit #{page},#{pageSize}
+    </select>
+    <select id="getNoticesCount" resultType="Integer">
+        select count(*)
+        from notice
+    </select>
+    <insert id="insertNoticeByNotice" parameterType="Notice">
+        insert into notice value (default ,#{title}, #{date},#{content},#{url} )
+    </insert>
+    <delete id="deleteNoticeById" parameterType="Integer">
+        delete
+        from notice
+        where id = #{id}
+    </delete>
+    <update id="updateNoticeByNotice" parameterType="Notice">
+        update notice
+        <set>
+            <if test="title!=null">
+                `title` = #{title},
+            </if>
+            <if test="date!=null">
+                `date` = #{date},
+            </if>
+            <if test="content!=null">
+                `content` = #{content},
+            </if>
+            <if test="url!=null">
+                `url` = #{url},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+</mapper>

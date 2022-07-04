@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.leolam.www.user.web.mapper.SysUserMapper">
+    <insert id="insertSysUserByEmailAndPassWord">
+        insert into sys_user value (default ,#{password},default ,#{email},default ,default ,default ,default ,default )
+    </insert>
+    <insert id="insertSysUserByEmailAndPassWordAndUsersId">
+        insert into sys_user value (default ,#{password},default ,#{email},default ,default ,default ,default ,default,#{usersId})
+    </insert>
+    <update id="updatePassWordByEmail">
+        update sys_user set password = #{password} where email = #{email}
+    </update>
+    <delete id="deleteUserByEmail" parameterType="String">
+        delete from sys_user where email =#{email}
+    </delete>
+    <update id="updatePassWordEmailByUsersId">
+        update sys_user
+        <set>
+            <if test="password!=null">
+                password = #{password},
+            </if>
+            <if test="email!=null">
+                email = #{email},
+            </if>
+        </set>
+        where usersId = #{usersId}
+    </update>
+</mapper>

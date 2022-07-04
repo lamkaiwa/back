@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.leolam.www.user.web.mapper.MessageMapper">
+    <insert id="insertMessageByMessage" parameterType="Message">
+        insert into message value (default ,#{comment},#{you},#{youSay},#{user},#{content},default,#{replyId} )
+    </insert>
+    <delete id="deleteMessagesByCommentId" parameterType="Long">
+        delete from message
+        where comment = #{commentId}
+    </delete>
+    <delete id="deleteMessageByReplyId" parameterType="Long">
+        delete from message
+        where replyId = #{replyId}
+    </delete>
+    <delete id="deleteMessagesByYouOrUser" parameterType="Long">
+        delete from message
+        where you = #{userId} or user = #{userId}
+    </delete>
+
+    <select id="getMessagesByUserId" resultType="Message" parameterType="Long">
+        select * from message
+        where user = #{userId}
+        order by date desc
+    </select>
+
+    <select id="getMessageById" resultType="Message" parameterType="Long">
+        select * from message
+        where id = #{id}
+    </select>
+</mapper>
